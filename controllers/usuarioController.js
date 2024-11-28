@@ -97,7 +97,7 @@ const registrar = async (req, res) => {
         .isLength({ min: 8 }).withMessage('El Password debe ser de al menos 8 caracteres')
         .run(req);
     await check('repetir_password')
-        .equals(req.body.pass_usuario).withMessage('La contraseña debe coincidir con la anterior')
+        .equals(req.body.password).withMessage('La contraseña debe coincidir con la anterior')
         .run(req);
 
     // Validación de la fecha de nacimiento

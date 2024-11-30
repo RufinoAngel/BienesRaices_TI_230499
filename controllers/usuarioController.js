@@ -302,12 +302,19 @@ const nuevoPassword = async (req, res) => {
 
 
 }
+const mostrarUsuario = (req, res) => {
+    res.render('auth/usuario', {
+        page: 'Perfil de Usuario',
+        usuario: req.usuario || {} // Asegúrate de que req.usuario esté definido
+    });
+};
 
 export {
     formularioLogin,
     cerrarSesion,
     formularioRegistro,
     autenticar,
+    mostrarUsuario,
     registrar,
     confirmar,
     formularioOlvidePassword,

@@ -16,6 +16,7 @@ div(class="bg-emerald-400 py-5 hidden lg:block")
             a(href="/categorias/3" class="text-sm font-bold uppercase text-white mx-1 hover:bg-pigmentgreen py-1 px-7 rounded-lg") Bodegas
             a(href="/categorias/4" class="text-sm font-bold uppercase text-white mx-1 hover:bg-pigmentgreen py-1 px-7 rounded-lg") Terrenos
             a(href="/categorias/5" class="text-sm font-bold uppercase text-white mx-1 hover:bg-pigmentgreen py-1 px-7 rounded-lg") Cabañas
+            a(href="/categorias/6" class="text-sm font-bold uppercase text-white mx-1 hover:bg-pigmentgreen py-1 px-7 rounded-lg") Establecimientos 
 
         form(action="/buscador" method="POST" class="flex gap-3 items-center") 
             input(type="hidden" name="_csrf" value= csrfToken)
@@ -24,3 +25,4 @@ div(class="bg-emerald-400 py-5 hidden lg:block")
             input(type="text" id="termino" name="termino" placeholder="Buscar propiedades" class="p-2 rounded-lg shadow text-sm")
 
             input(type="submit" class="bg-celadon-300 hover:bg-celadon rounded-lg text-white uppercase font-bold p-2 cursor-pointer text-sm" value="Buscar" )
+            pre=JSON.stringify(propiedad,null,2)

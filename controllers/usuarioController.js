@@ -6,6 +6,7 @@ import { emailRegistro, emailOlvidePassword } from '../helpers/emails.js'
 import moment from 'moment'
 import pool from '../config/db.js'; 
 import multer from 'multer';
+import Mensaje from '../models/Mensaje.js'
 
 const formularioLogin = (req, res) => {
     res.render('auth/login', {
@@ -460,6 +461,50 @@ const actualizarPerfil = async (req, res) => {
     }
 };
 
+const responderMensaje = async (req, res) => {
+    const { id } = req.params;
+    const { respuesta } = req.body;
+    
+    // Validar que el mensaje exista
+    const mensaje = await Mensaje.findByPk(id);
+
+    if (!mensaje) {
+        return res.redirect('/mis-propiedades');
+    }
+
+    // Asegurarse de que el usuario autenticado sea el administrador o propietario del mensaje
+    if (req.usuario.rol !== 'admin' && req.usuario.id.toString() !== mensaje.usuarioID.toString()) {
+        return res.redirect('/mis-propiedades');
+    }
+
+    // Actualizar el mensaje con la respuesta del administrador
+    mensaje.respuesta = respuesta;
+    await mensaje.save();
+
+    res.redirect(`/propiedades/mensajes/${mensaje.propiedadID}`);
+};
+
+
+
+const mostrarMensajes = async (req, res) => {
+    try {
+        const mensajes = await Mensaje.findAll({
+            include: {
+                association: 'usuario', // Relación con el modelo Usuario
+                attributes: ['nombre', 'email', 'foto'], // Campos que deseas incluir
+            },
+        });
+
+        res.render('views/mensajes', {
+            pagina: 'Mensajes',
+            mensajes,
+            csrfToken: req.csrfToken(),
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al cargar los mensajes.');
+    }
+};
 export {
     formularioLogin,
     cerrarSesion,
@@ -475,5 +520,6 @@ export {
     subirFotoPerfil,
     almacenarFotoPerfil,
     mostrarFormularioEditar,
-    actualizarPerfil
+    actualizarPerfil,
+    responderMensaje,mostrarMensajes
 }

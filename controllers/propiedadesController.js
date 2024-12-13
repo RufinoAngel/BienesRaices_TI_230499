@@ -461,8 +461,36 @@ const verMensajes = async (req, res) => {
         mensajes: propiedad.mensajes,
         propiedad, // Pasa la propiedad completa a la vista
         formatearFecha,
+        csrfToken: req.csrfToken()
     });
 }
+const responderMensaje = async (req, res) => {
+    const { id } = req.params;
+    const { respuesta } = req.body;
+
+    try {
+        // Validar que haya una respuesta
+        if (!respuesta || respuesta.trim() === '') {
+            return res.status(400).send('La respuesta no puede estar vacía.');
+        }
+
+        // Buscar el mensaje y actualizar su respuesta
+        const mensaje = await Mensaje.findByPk(id);
+        if (!mensaje) {
+            return res.status(404).send('Mensaje no encontrado.');
+        }
+
+        // Guardar la respuesta
+        mensaje.respuesta = respuesta;
+        await mensaje.save();
+
+        // Redirigir al usuario después de responder
+        res.redirect('/mis-propiedades');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al guardar la respuesta.');
+    }
+};
 
 export {
     admin,
@@ -476,6 +504,7 @@ export {
     mostrarPropiedad,
     enviarMensaje,
     verMensajes,
-    cambiarEstado
+    cambiarEstado,
+    responderMensaje,
 }
 

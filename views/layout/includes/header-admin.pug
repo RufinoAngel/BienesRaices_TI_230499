@@ -6,7 +6,7 @@ header.bg-emerald-100.p-4
         nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden") 
             a(href="/" class="bg-emerald-400 hover:bg-celadon rounded-lg text-white uppercase font-bold p-2 cursor-pointer text-sm") Inicio
             a(href="/mis-propiedades" class="bg-emerald-400 hover:bg-celadon rounded-lg text-white uppercase font-bold p-2 cursor-pointer text-sm") Mis propiedades 
-            a(href="/auth/usuario" class="bg-emerald-400 hover:bg-celadon rounded-lg text-white uppercase font-bold p-2 cursor-pointer text-sm") Mi perfil
+            a(href="/auth/perfil" class="bg-emerald-400 hover:bg-celadon rounded-lg text-white uppercase font-bold p-2 cursor-pointer text-sm") Mi perfil
             form(action="/auth/cerrar-sesion" method="POST")  
                 input(type="hidden" name="_csrf" value= csrfToken)
                 input(type="submit" class="bg-emerald-400 hover:bg-celadon py-2 px-10 rounded-lg" value="Cerrar Sesión")    

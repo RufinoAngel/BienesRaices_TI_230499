@@ -387,7 +387,8 @@ const enviarMensaje = async (req, res) => {
     const propiedad = await Propiedad.findByPk(id, {
         include: [
             { model: Precio, as: 'precio' },
-            { model: Categoria, as: 'categoria' }
+            { model: Categoria, as: 'categoria' },
+            { model: Usuario, as: 'usuario', attributes: ['alias', 'foto'] }
         ]
     })
 
@@ -439,26 +440,28 @@ const verMensajes = async (req, res) => {
             {
                 model: Mensaje, as: 'mensajes',
                 include: [
-                    { model: Usuario.scope('eliminarPassword'), as: 'usuario' }
+                    { model: Usuario.scope('eliminarPassword'), as: 'usuario', attributes: ['nombre', 'email', 'alias', 'foto'] }
                 ]
             },
+            { model: Usuario, as: 'usuario', attributes: ['nombre', 'foto'] } // Incluye al propietario de la propiedad
         ],
-    })
-
+    });
+    
     if (!propiedad) {
-        return res.redirect('/mis-propiedades')
+        return res.redirect('/mis-propiedades');
     }
-
-    //Revisar quin visita la URL sea dueño de la propeidd
+    
+    // Asegúrate de que el usuario autenticado sea el propietario de la propiedad
     if (propiedad.usuarioID.toString() !== req.usuario.id.toString()) {
-        return res.redirect('/mis-propiedades')
+        return res.redirect('/mis-propiedades');
     }
-
+    
     res.render('propiedades/mensajes', {
         pagina: 'Mensajes',
         mensajes: propiedad.mensajes,
-        formatearFecha
-    })
+        propiedad, // Pasa la propiedad completa a la vista
+        formatearFecha,
+    });
 }
 
 export {

@@ -899,6 +899,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(254 249 195 / var(--tw-bg-opacity, 1));
 }
+.bg-celadon {
+  --tw-bg-opacity: 1;
+  background-color: rgb(168 230 161 / var(--tw-bg-opacity, 1));
+}
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1130,6 +1134,9 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.duration-300 {
+  transition-duration: 300ms;
+}
 
 .leaflet-container a {
     color: #FFF;
@@ -1163,6 +1170,11 @@ video {
 .hover\:bg-pigmentgreen:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(76 175 80 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:text-pigmentgreen:hover {
+  --tw-text-opacity: 1;
+  color: rgb(76 175 80 / var(--tw-text-opacity, 1));
 }
 
 .hover\:underline:hover {

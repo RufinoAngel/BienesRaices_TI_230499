@@ -186,30 +186,29 @@ const registrar = async (req, res) => {
 const confirmar = async (req, res) => {
     const { token } = req.params;
 
-    //verificar si el token es valido
-
-    const usuario = await Usuario.findOne({ where: { token } })
+    // Verificar si el token es válido
+    const usuario = await Usuario.findOne({ where: { token } });
     if (!usuario) {
         return res.render('auth/confirmar-cuenta', {
             pagina: 'Error al confirmar tu cuenta',
             mensaje: 'Hubo un error al confirmar tu cuenta, intenta de nuevo',
             error: true
-        })
+        });
     }
 
-    //confirmar la cuenta
+    // Confirmar la cuenta
     usuario.token = null;
     usuario.confirmado = true;
     await usuario.save();
 
     res.render('auth/confirmar-cuenta', {
         pagina: 'Cuenta confirmada',
-        mensaje: 'La cuenta se confirmo correctamente'
-    })
+        mensaje: 'La cuenta se confirmó correctamente'
+    });
 
+    console.log(usuario);
+};
 
-    console.log(usuario)
-}
 
 const formularioOlvidePassword = (req, res) => {
     res.render('auth/olvide-password', {
@@ -243,7 +242,7 @@ const resetPassword = async (req, res) => {
             errores: [{ msg: 'El email no pertenece a ningún usuario' }]
         })
     }
-
+    usuario.password="";
     //Generar un token y enviar el email
     usuario.token = generateID();
     await usuario.save();
@@ -364,38 +363,29 @@ const almacenarFotoPerfil = async (req, res) => {
     }
 
     try {
-        console.log(req.file);
-
-        // Almacenar la imagen del usuario
         usuario.foto = req.file.filename;
         await usuario.save();
-
-        // Enviar el correo de confirmación
+    
         emailRegistro({
             nombre: usuario.nombre,
             email: usuario.email,
             token: usuario.token,
         });
-
-        // Mostrar la página de mensaje de confirmación
+    
         return res.render('templates/message', {
             pagina: 'Cuenta creada correctamente',
-            mensaje: 'Hemos enviado un email de confirmación, presiona en el enlace.',
+            mensaje: 'Hemos enviado un email de confirmación. Por favor, revisa tu bandeja de entrada.',
         });
     } catch (error) {
-        console.log(error);
-
-        // Manejar errores en la subida de la imagen
+        console.error('Error:', error);
+    
         return res.render('auth/registro', {
             pagina: 'Crear cuenta',
-            csrfToken: req.csrfToken(),
-            errores: [{ msg: 'La subida de la imagen falló, intenta de nuevo.' }],
-            usuario: {
-                nombre: req.body.nombre,
-                email: req.body.email,
-            },
+            errores: [{ msg: 'Falló al subir la imagen, intenta de nuevo.' }],
+            usuario: { nombre: req.body.nombre, email: req.body.email },
         });
     }
+    
 };
 
  const mostrarUsuario = async (req, res) => {

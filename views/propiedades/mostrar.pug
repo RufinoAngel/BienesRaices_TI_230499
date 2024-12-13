@@ -46,22 +46,22 @@ block contenido
                     p(class="text-gray-600 font-bold text-xs") Direccion 
                         span(id="calle" class="text-gray-800 block text-lg")= propiedad.calle  
 
-                    
-                    if !esVendedor
+                        
+                    if propiedad.usuario && propiedad.usuario.alias && propiedad.usuario.foto
                         h3(class="text-2xl text-center my-10 font-extrabold text-gray-900") Vendedor
+                        div(class="flex items-center justify-center")
+                            img(class="w-10 h-10 rounded-full" src=`/uploads/${propiedad.usuario.foto}` alt="Avatar del vendedor")
+                            p(class="text-sm text-gray-800 font-bold ml-3")= propiedad.usuario.alias
 
+                    if !esVendedor
                         if enviado 
                             p(class="p-2 text-center bg-green-100 text-green-600 uppercase font-bold") Mensaje Enviado Correctamente
-
-
                         if usuario
 
                             if errores 
                                 div(class="max-w-md mx-auto my-10")
                                     each error in errores
                                         p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
-
-
 
                             form(method="POST" action="") 
                                 input(type="hidden" name="_csrf" value= csrfToken)
@@ -78,7 +78,6 @@ block contenido
                                 p(class="text-center") Si deseas contactar al vendedor 
                                 a(class="text-indigo-600" href="/auth/crear-cuenta")
 
-
 block scripts 
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
-    script(src="/js/mostrarMapa.js") 
+    script(src="/js/mostrarMapa.js")
